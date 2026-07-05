@@ -1,0 +1,27 @@
+name: Keep Streamlit App Awake
+
+# Runs on a schedule to visit the Streamlit app before its 12-hour
+# inactivity sleep timer runs out. Also runnable manually from the
+# Actions tab via "Run workflow" if you ever want to force a ping.
+#
+# STREAMLIT_APP_URL: if the app URL ever changes, update it below —
+# this is the only place it needs to change in this workflow.
+
+on:
+  schedule:
+    # Runs every 6 hours (four times a day), safely under the
+    # 12-hour sleep window with margin for any delay in the runner.
+    - cron: "0 */6 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Visit the app to reset its sleep timer
+        run: |
+          curl -sSL -o /dev/null -w "HTTP status: %{http_code}\n" \
+            "https://overlimits.streamlit.app/" \
+            --max-time 60 \
+            --retry 3 \
+            --retry-delay 10
