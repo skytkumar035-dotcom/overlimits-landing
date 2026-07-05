@@ -1,0 +1,624 @@
+/* =========================================================
+   OVERLIMITS — shared stylesheet
+   ---------------------------------------------------------
+   COLOR TOKENS — pulled directly from the logo artwork.
+   If you ever rebrand, this is the ONLY place colors live.
+   ========================================================= */
+:root{
+  --bg:            #0a0a0f;   /* page background, matches logo bg */
+  --surface:       #14151d;   /* cards, nav, footer */
+  --surface-2:     #1b1d27;   /* raised cards (pricing "Pro" card) */
+  --border:        #262838;   /* hairline borders */
+  --border-soft:   #1d1f2a;
+
+  --accent:        #4f6ef7;   /* primary periwinkle blue (from "LIMITS") */
+  --accent-light:  #7b93ff;   /* lighter blue (bar tip / arrow) */
+  --accent-dim:    #1e2340;   /* muted navy (short bars, subtle fills) */
+  --accent-ink:    #0b0e1f;   /* text placed ON accent-colored buttons */
+
+  --text:          #f5f6fa;   /* primary text, off-white */
+  --text-muted:    #8b93a7;   /* secondary text, gray-blue */
+  --text-faint:    #565b70;   /* tertiary / disabled */
+
+  --good:          #6fd3a3;   /* used sparingly for "fixed" states */
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --container: 1120px;
+
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* =========================================================
+   RESET / BASE
+   ========================================================= */
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+img{ max-width: 100%; display: block; }
+a{ color: inherit; text-decoration: none; }
+ul{ margin: 0; padding: 0; list-style: none; }
+h1,h2,h3,h4{
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0 0 .5em;
+  letter-spacing: -0.01em;
+}
+p{ margin: 0 0 1em; color: var(--text-muted); }
+:focus-visible{
+  outline: 2px solid var(--accent-light);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+.container{
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.eyebrow{
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.eyebrow::before{
+  content: "";
+  width: 16px; height: 1px;
+  background: var(--accent-light);
+  display: inline-block;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 13px 22px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+  white-space: nowrap;
+}
+.btn-primary{
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 8px 24px -8px rgba(79,110,247,.55);
+}
+.btn-primary:hover{ background: #5f7cf9; transform: translateY(-1px); }
+.btn-secondary{
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn-secondary:hover{ border-color: var(--accent-light); color: var(--accent-light); }
+.btn-block{ width: 100%; }
+.btn-sm{ padding: 9px 16px; font-size: 13.5px; }
+
+/* =========================================================
+   HEADER / NAV
+   ========================================================= */
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(10,10,15,.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.site-header .container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.brand{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text);
+}
+.brand svg{ width: 32px; height: 32px; flex-shrink: 0; }
+.brand .brand-word b{ color: var(--accent-light); font-weight: 600; }
+
+.nav-links{
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.nav-links a:not(.btn){
+  font-size: 14.5px;
+  color: var(--text-muted);
+  transition: color .15s ease;
+}
+.nav-links a:not(.btn):hover{ color: var(--text); }
+
+.nav-toggle{ display: none; }
+
+@media (max-width: 720px){
+  .nav-links{
+    position: fixed;
+    inset: 72px 0 auto 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 18px 24px 24px;
+    gap: 16px;
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease;
+  }
+  .nav-links.open{
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .nav-toggle{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; height: 40px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+  }
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero{
+  position: relative;
+  overflow: hidden;
+  padding: 96px 0 88px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.hero-bars{
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 620px;
+  opacity: .10;
+  pointer-events: none;
+}
+.hero-grid{
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 56px;
+  align-items: center;
+}
+.hero h1{
+  font-size: clamp(34px, 4.4vw, 52px);
+  max-width: 15ch;
+}
+.hero h1 .accent{ color: var(--accent-light); }
+.hero .lede{
+  font-size: 17.5px;
+  max-width: 46ch;
+  margin-bottom: 30px;
+}
+.hero-ctas{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.hero-note{
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+/* --- signature element: the data-cleaning strip --- */
+.clean-card{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: 0 30px 60px -30px rgba(0,0,0,.6);
+}
+.clean-card-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.clean-card-head .dots{ display: flex; gap: 6px; }
+.clean-card-head .dots span{
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border);
+  display: inline-block;
+}
+.clean-row{
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--border);
+  align-items: start;
+}
+.clean-row:last-child{ border-bottom: none; }
+.clean-row .label{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding-top: 3px;
+}
+.clean-row .value{ font-family: var(--font-mono); font-size: 13.5px; }
+.clean-row .before .bad{ color: #e8836f; text-decoration: line-through; text-decoration-color: rgba(232,131,111,.5); }
+.clean-row .after .good{ color: var(--good); }
+.clean-row .arrow{ color: var(--text-faint); margin: 0 8px; }
+
+/* =========================================================
+   SECTIONS (generic)
+   ========================================================= */
+section{ padding: 88px 0; }
+.section-head{
+  max-width: 640px;
+  margin: 0 auto 52px;
+  text-align: center;
+}
+.section-head h2{ font-size: clamp(26px, 3vw, 34px); }
+.section-head p{ font-size: 16px; }
+
+/* =========================================================
+   HOW IT WORKS
+   ========================================================= */
+.steps{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.step{
+  padding: 34px 28px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.step:last-child{ border-right: none; }
+.step-index{
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--accent-light);
+  margin-bottom: 16px;
+  display: block;
+}
+.step h3{ font-size: 18px; margin-bottom: 8px; }
+.step p{ font-size: 14.5px; margin-bottom: 0; }
+
+@media (max-width: 820px){
+  .steps{ grid-template-columns: 1fr; }
+  .step{ border-right: none; border-bottom: 1px solid var(--border); }
+  .step:last-child{ border-bottom: none; }
+}
+
+/* =========================================================
+   FEATURES / TRUST
+   ========================================================= */
+.feature-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.feature{
+  background: var(--surface);
+  padding: 28px;
+}
+.feature .tag{
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--accent-light);
+  background: var(--accent-dim);
+  border: 1px solid rgba(79,110,247,.25);
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+.feature h3{ font-size: 17px; margin-bottom: 6px; }
+.feature p{ font-size: 14.5px; margin-bottom: 0; }
+
+@media (max-width: 720px){
+  .feature-grid{ grid-template-columns: 1fr; }
+}
+
+/* =========================================================
+   PRICING
+   ========================================================= */
+.pricing-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.price-card{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 34px 30px;
+  display: flex;
+  flex-direction: column;
+}
+.price-card.featured{
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border-color: var(--accent);
+  box-shadow: 0 24px 60px -28px rgba(79,110,247,.45);
+  position: relative;
+}
+.price-card .plan-badge{
+  position: absolute;
+  top: -13px; right: 24px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+.price-card .plan-name{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 14px;
+}
+.price-card .plan-price{
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.price-card .plan-price span{
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+.price-card .plan-desc{ font-size: 14.5px; margin-bottom: 24px; }
+.price-list{ margin-bottom: 28px; flex-grow: 1; }
+.price-list li{
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14.5px;
+  color: var(--text);
+  padding: 7px 0;
+}
+.price-list li svg{ flex-shrink: 0; margin-top: 3px; color: var(--accent-light); }
+
+@media (max-width: 720px){
+  .pricing-grid{ grid-template-columns: 1fr; }
+}
+
+/* =========================================================
+   CTA BAND
+   ========================================================= */
+.cta-band{
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+  text-align: center;
+  padding: 70px 0;
+}
+.cta-band h2{ font-size: clamp(24px, 3vw, 30px); margin-bottom: 10px; }
+.cta-band p{ margin-bottom: 26px; }
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.site-footer{
+  background: var(--surface);
+  border-top: 1px solid var(--border-soft);
+  padding: 56px 0 30px;
+}
+.footer-top{
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 32px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.footer-brand .brand{ margin-bottom: 12px; }
+.footer-brand p{ font-size: 13.5px; max-width: 34ch; }
+.footer-col h4{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+}
+.footer-col ul li{ margin-bottom: 10px; }
+.footer-col a{ font-size: 14px; color: var(--text-muted); }
+.footer-col a:hover{ color: var(--accent-light); }
+.footer-bottom{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 22px;
+  font-size: 13px;
+  color: var(--text-faint);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 720px){
+  .footer-top{ grid-template-columns: 1fr; gap: 28px; }
+  .footer-bottom{ flex-direction: column; align-items: flex-start; }
+}
+
+/* =========================================================
+   LEGAL PAGES (terms / privacy / refund)
+   ========================================================= */
+.legal-hero{
+  padding: 64px 0 40px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.legal-hero h1{ font-size: clamp(28px, 4vw, 38px); }
+.legal-hero .updated{
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+.legal-body{
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 24px 100px;
+}
+.legal-body h2{
+  font-size: 20px;
+  margin-top: 44px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 24px;
+}
+.legal-body h2:first-child{ margin-top: 0; border-top: none; padding-top: 0; }
+.legal-body p, .legal-body li{ font-size: 15px; color: var(--text-muted); }
+.legal-body ul{ margin: 0 0 1em; padding-left: 20px; list-style: disc; }
+.legal-body li{ margin-bottom: 6px; }
+.legal-body strong{ color: var(--text); }
+.legal-body a{ color: var(--accent-light); }
+.legal-body a:hover{ text-decoration: underline; }
+
+/* =========================================================
+   CONTACT PAGE
+   ========================================================= */
+.contact-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.contact-note{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  font-size: 14.5px;
+  color: var(--text-muted);
+  margin-top: 24px;
+}
+.contact-note .sig{
+  font-family: var(--font-mono);
+  color: var(--accent-light);
+  font-size: 13px;
+  margin-top: 10px;
+  display: block;
+}
+.form-field{ margin-bottom: 18px; }
+.form-field label{
+  display: block;
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.form-field input,
+.form-field textarea{
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  resize: vertical;
+}
+.form-field input:focus,
+.form-field textarea:focus{ border-color: var(--accent-light); outline: none; }
+
+@media (max-width: 820px){
+  .contact-grid{ grid-template-columns: 1fr; }
+}
+
+/* utility */
+.mt-0{ margin-top: 0; }
+.text-center{ text-align: center; }
+
+/* =========================================================
+   APP EMBED (app.html) — wraps the Streamlit iframe so it
+   reads as part of the site rather than a bare embedded box.
+   ========================================================= */
+.app-frame-wrap{
+  width: 100%;
+  height: 82vh;
+  min-height: 560px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.app-frame{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: var(--bg);
+}
+.app-frame-note{
+  margin: 14px 2px 0;
+  font-size: 13.5px;
+  color: var(--text-faint);
+}
+.app-frame-note a{ color: var(--accent-light); }
+.app-frame-note a:hover{ text-decoration: underline; }
+
+@media (max-width: 640px){
+  .app-frame-wrap{ height: 78vh; min-height: 480px; border-radius: var(--radius-md); }
+}
