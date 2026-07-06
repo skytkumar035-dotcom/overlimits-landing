@@ -9,9 +9,11 @@ name: Keep Streamlit App Awake
 
 on:
   schedule:
-    # Runs every 6 hours (four times a day), safely under the
-    # 12-hour sleep window with margin for any delay in the runner.
-    - cron: "0 */6 * * *"
+    # Every 3 hours — tighter than before, since the app can apparently
+    # still slip into sleep between pings for reasons beyond the documented
+    # 12-hour window (or a missed/delayed scheduled run). More frequent
+    # pings reduce that window of risk.
+    - cron: "0 */3 * * *"
   workflow_dispatch: {}
 
 jobs:
@@ -20,8 +22,11 @@ jobs:
     steps:
       - name: Visit the app to reset its sleep timer
         run: |
-          curl -sSL -o /dev/null -w "HTTP status: %{http_code}\n" \
+          curl -sS -o /dev/null -w "HTTP status: %{http_code}\n" \
             "https://overlimits.streamlit.app/" \
             --max-time 60 \
+            --max-redirs 5 \
             --retry 3 \
-            --retry-delay 10
+            --retry-delay 10 \
+          || echo "Ping failed or app may be asleep — see note below."
+        continue-on-error: true
